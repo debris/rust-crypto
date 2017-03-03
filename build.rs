@@ -51,8 +51,8 @@ fn main() {
         cfg.file("src/util_helpers.c");
         cfg.file("src/aesni_helpers.c");
         if target.contains("android") {
-			setup_android(&mut cfg);
-		}
+            setup_android(&mut cfg);
+        }
 
         if env::var_os("CC").is_none() {
             if host.contains("openbsd") {
