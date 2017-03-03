@@ -106,15 +106,15 @@ uint32_t rust_crypto_util_fixed_time_eq_asm(uint8_t* lhsp, uint8_t* rhsp, size_t
     if (count == 0) {
         return 1;
     }
-    uint8_t result = 0;
+    uint64_t result = 0;
     asm(
         " \
             1: \
             \
-            ldrb w4, [%1]; \
-            ldrb w5, [%2]; \
-            eor w4, w4, w5; \
-            orr %0, %0, w4; \
+            ldrsb x4, [%1]; \
+            ldrsb x5, [%2]; \
+            eor x4, x4, x5; \
+            orr %0, %0, x4; \
             \
             add %1, %1, #1; \
             add %2, %2, #1; \
@@ -123,7 +123,7 @@ uint32_t rust_crypto_util_fixed_time_eq_asm(uint8_t* lhsp, uint8_t* rhsp, size_t
         "
         : "+&r" (result), "+&r" (lhsp), "+&r" (rhsp), "+&r" (count) // all input and output
         : // input
-        : "w4", "w5", "cc" // clobbers
+        : "x4", "x5", "cc" // clobbers
     );
 
     return result;
